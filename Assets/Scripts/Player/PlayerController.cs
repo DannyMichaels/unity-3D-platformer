@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
   private Vector3 moveAmount;
   public CharacterController characterController;
   private CameraController cameraController;
-
+  public Animator anim;
 
   void Awake()
   {
@@ -86,6 +86,9 @@ public class PlayerController : MonoBehaviour
     }
 
     characterController.Move(new Vector3(moveAmount.x * moveSpeed, moveAmount.y, moveAmount.z * moveSpeed) * Time.deltaTime);
+
+    float moveVelocity = new Vector3(moveAmount.x, 0f, moveAmount.z).magnitude * moveSpeed;
+    anim.SetFloat("speed", moveVelocity);
   }
 
   private void HandleGravity()
