@@ -69,7 +69,9 @@ public class PlayerController : MonoBehaviour
       if (moveAmount != Vector3.zero)
       {
         // quaternion is a way to represent rotation in 3D space in Unity
-        transform.rotation = Quaternion.LookRotation(moveAmount);
+        Quaternion newRotation = Quaternion.LookRotation(moveAmount);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
       }
     }
 
