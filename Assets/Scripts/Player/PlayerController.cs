@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
   void Update()
   {
     HandleMovement();
+    HandleAnimation();
   }
 
   // doesn't run every frame, runs every physics frame
@@ -86,9 +87,6 @@ public class PlayerController : MonoBehaviour
     }
 
     characterController.Move(new Vector3(moveAmount.x * moveSpeed, moveAmount.y, moveAmount.z * moveSpeed) * Time.deltaTime);
-
-    float moveVelocity = new Vector3(moveAmount.x, 0f, moveAmount.z).magnitude * moveSpeed;
-    anim.SetFloat("speed", moveVelocity);
   }
 
   private void HandleGravity()
@@ -102,5 +100,13 @@ public class PlayerController : MonoBehaviour
     {
       moveAmount.y = Physics.gravity.y * gravityScale * Time.deltaTime;
     }
+  }
+
+  private void HandleAnimation()
+  {
+    float moveVelocity = new Vector3(moveAmount.x, 0f, moveAmount.z).magnitude * moveSpeed;
+    anim.SetFloat("speed", moveVelocity);
+    anim.SetBool("isGrounded", characterController.isGrounded);
+    anim.SetFloat("yVel", moveAmount.y);
   }
 }
