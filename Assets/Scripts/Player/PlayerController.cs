@@ -13,15 +13,19 @@ public class PlayerController : MonoBehaviour
   private CameraController cameraController;
   public Animator anim;
 
+  public GameObject jumpParticle, landingParticle;
+  private bool lastGrounded;
+
   void Awake()
   {
     cameraController = FindObjectOfType<CameraController>();
+    lastGrounded = true;
   }
 
   // Start is called before the first frame update
   void Start()
   {
-
+    characterController.Move(new Vector3(0f, Physics.gravity.y * gravityScale * Time.deltaTime, 0f));
   }
 
   // Update is called once per frame
@@ -78,13 +82,10 @@ public class PlayerController : MonoBehaviour
 
     moveAmount.y = yStore; // reset the y value
 
-    if (characterController.isGrounded)
-    {
-      if (Input.GetButtonDown("Jump"))
-      {
-        moveAmount.y = jumpForce;
-      }
-    }
+
+    HandleJump();
+
+    lastGrounded = characterController.isGrounded;
 
     characterController.Move(new Vector3(moveAmount.x * moveSpeed, moveAmount.y, moveAmount.z * moveSpeed) * Time.deltaTime);
   }
@@ -108,5 +109,24 @@ public class PlayerController : MonoBehaviour
     anim.SetFloat("speed", moveVelocity);
     anim.SetBool("isGrounded", characterController.isGrounded);
     anim.SetFloat("yVel", moveAmount.y);
+  }
+
+  private void HandleJump()
+  {
+    if (!characterController.isGrounded) return;
+
+    jumpParticle.SetActive(false);
+
+    if (!lastGrounded)
+    {
+      landingParticle.SetActive(true);
+    }
+
+    if (Input.GetButtonDown("Jump"))
+    {
+      landingParticle.SetActive(false);
+      moveAmount.y = jumpForce;
+      jumpParticle.SetActive(true);
+    }
   }
 }
