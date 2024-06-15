@@ -7,9 +7,11 @@ public class PlayerController : MonoBehaviour
   public float moveSpeed;
   public float jumpForce, gravityScale;
   private float yStore;
+  public float rotateSpeed = 10f;
   private Vector3 moveAmount;
   public CharacterController characterController;
   private CameraController cameraController;
+
 
   void Awake()
   {
@@ -70,7 +72,6 @@ public class PlayerController : MonoBehaviour
         moveAmount.y = jumpForce;
       }
     }
-
 
     characterController.Move(new Vector3(moveAmount.x * moveSpeed, moveAmount.y, moveAmount.z * moveSpeed) * Time.deltaTime);
   }
