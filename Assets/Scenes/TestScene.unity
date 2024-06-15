@@ -285,6 +285,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
+  jumpForce: 5
+  gravityScale: 5
   characterController: {fileID: 170178493}
 --- !u!4 &170178492
 Transform:

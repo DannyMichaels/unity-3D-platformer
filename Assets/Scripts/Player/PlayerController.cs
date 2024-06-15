@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
   public float moveSpeed;
+  public float jumpForce, gravityScale;
+  private float yStore;
   private Vector3 moveAmount;
   public CharacterController characterController;
   private CameraController cameraController;
@@ -52,7 +54,7 @@ public class PlayerController : MonoBehaviour
     //   ) * Time.deltaTime
     // );
 
-    float yStore = moveAmount.y; // store the y value so we don't lose it when we reset moveAmount
+    yStore = moveAmount.y; // store the y value so we don't lose it when we reset moveAmount
 
     // move in the direction the camera is facing
     moveAmount = (cameraController.transform.forward * Input.GetAxisRaw("Vertical")) + (cameraController.transform.right * Input.GetAxisRaw("Horizontal"));
@@ -60,6 +62,15 @@ public class PlayerController : MonoBehaviour
     moveAmount = moveAmount.normalized; // normalize so diagonal movement isn't faster
 
     moveAmount.y = yStore; // reset the y value
+
+    if (characterController.isGrounded)
+    {
+      if (Input.GetButtonDown("Jump"))
+      {
+        moveAmount.y = jumpForce;
+      }
+    }
+
 
     characterController.Move(new Vector3(moveAmount.x * moveSpeed, moveAmount.y, moveAmount.z * moveSpeed) * Time.deltaTime);
   }
@@ -69,11 +80,11 @@ public class PlayerController : MonoBehaviour
     if (!characterController.isGrounded)
     {
       // fixedDeltaTime how much time has passed since the last time fixedUpdate was called
-      moveAmount.y = moveAmount.y + (Physics.gravity.y * Time.fixedDeltaTime);
+      moveAmount.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
     }
     else
     {
-      moveAmount.y = Physics.gravity.y * Time.deltaTime;
+      moveAmount.y = Physics.gravity.y * gravityScale * Time.deltaTime;
     }
   }
 }
