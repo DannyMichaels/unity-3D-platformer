@@ -63,6 +63,16 @@ public class PlayerController : MonoBehaviour
     moveAmount.y = 0f; // don't move up or down 
     moveAmount = moveAmount.normalized; // normalize so diagonal movement isn't faster
 
+    if (moveAmount.magnitude > .1f)
+    {
+
+      if (moveAmount != Vector3.zero)
+      {
+        // quaternion is a way to represent rotation in 3D space in Unity
+        transform.rotation = Quaternion.LookRotation(moveAmount);
+      }
+    }
+
     moveAmount.y = yStore; // reset the y value
 
     if (characterController.isGrounded)
