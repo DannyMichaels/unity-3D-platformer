@@ -26,5 +26,11 @@ public class CameraController : MonoBehaviour
   private void FollowTarget()
   {
     transform.position = Vector3.Lerp(transform.position, target.position + offset, moveSpeed * Time.deltaTime);
+
+    // if for some reason, the player is falling down and the camera is going below the player, we want to stop the camera from going below the player
+    if (transform.position.y < offset.y)
+    {
+      transform.position = new Vector3(transform.position.x, offset.y, transform.position.z);
+    }
   }
 }
