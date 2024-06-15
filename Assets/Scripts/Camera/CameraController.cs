@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour
     target = FindObjectOfType<PlayerController>().transform;
 
     offset = transform.position;
+
+    HideComputerMouseCursor();
   }
 
   // Update is called once per frame
@@ -32,5 +34,11 @@ public class CameraController : MonoBehaviour
     {
       transform.position = new Vector3(transform.position.x, offset.y, transform.position.z);
     }
+  }
+
+  private void HideComputerMouseCursor()
+  {
+    Cursor.lockState = CursorLockMode.Locked;
+    // Cursor.visible = false;
   }
 }
